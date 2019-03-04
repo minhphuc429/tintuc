@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CategoryCreate;
 use App\Http\Requests\CategoryEdit;
 use App\Models\Category;
+use App\Traits\Helper;
 
 class CategoryController extends Controller
 {
@@ -39,7 +40,7 @@ class CategoryController extends Controller
     public function store(CategoryCreate $request)
     {
         $input = $request->all();
-        Category::create($input);
+        Category::create(array_merge($input, ['slug' => Helper::slugit($request->name)]));
 
         return redirect()->back()->with('status', trans('categories_create.status'));
     }
@@ -88,7 +89,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        Category::destroy($id);
-        return redirect()->back()->with('status', trans('categories_destroy.status'));
+        $category = Category::findOrfail($id);
+        $category->delete();
+        return response()->json();
     }
 }

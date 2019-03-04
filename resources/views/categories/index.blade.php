@@ -28,7 +28,7 @@
 
     <div class="row" style="margin-bottom: 20px; ">
         <div class="col-sm-2">
-            <a class="btn btn-primary" href="{{ action('CategoryController@create') }}">Thêm Danh Mục</a>
+            <a class="btn btn-primary" href="{{ action('CategoryController@create') }}">Thêm Thể Loại</a>
         </div>
     </div>
 
