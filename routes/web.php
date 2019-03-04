@@ -11,6 +11,26 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
+Route::get('/', 'HomeController@index');
+
+Route::prefix('dashboard')->group(function () {
+    Route::middleware('role:administrator')->group(function () {
+        Route::resource('posts', 'PostController');
+        Route::resource('categories', 'CategoryController')->except([
+            'show'
+        ]);
+//
+//        Route::resource('users', 'UserController')->except([
+//            'show'
+//        ]);
+//        Route::resource('roles', 'RoleController')->except([
+//            'show'
+//        ]);
+    });
+
+
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
