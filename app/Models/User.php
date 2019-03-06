@@ -52,40 +52,24 @@ class User extends Authenticatable
     }
 
     /**
-     * @param string|array $roles
-     *
-     * @return bool
+     * Checks if User has access to $permissions.
      */
-    public function authorizeRoles($roles)
+    public function hasAccess(array $permissions) : bool
     {
-        if (is_array($roles)) {
-            return $this->hasAnyRole($roles) ||
-                abort(401, 'This action is unauthorized.');
+        // check if the permission is available in any role
+        foreach ($this->roles as $role) {
+            if($role->hasAccess($permissions)) {
+                return true;
+            }
         }
-        return $this->hasRole($roles) ||
-            abort(401, 'This action is unauthorized.');
-    }
-    /**
-     * Check multiple roles
-     *
-     * @param array $roles
-     *
-     * @return bool
-     */
-    public function hasAnyRole($roles)
-    {
-        return null !== $this->roles()->whereIn('name', $roles)->first();
+        return false;
     }
 
     /**
-     * Check one role
-     *
-     * @param string $role
-     *
-     * @return bool
+     * Checks if the user belongs to role.
      */
-    public function hasRole($role)
+    public function inRole(string $roleSlug)
     {
-        return null !== $this->roles()->where('name', $role)->first();
+        return $this->roles()->where('slug', $roleSlug)->count() == 1;
     }
 }

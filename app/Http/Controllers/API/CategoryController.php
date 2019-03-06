@@ -1,14 +1,29 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryCreate;
 use App\Http\Requests\CategoryEdit;
-use App\Models\Category;
+use App\Repositories\CategoryRepository as Category;
 use App\Traits\Helper;
 
 class CategoryController extends Controller
 {
+    /**
+     * @var Category
+     */
+    private $category;
+
+    /**
+     * PostController constructor.
+     *
+     * @param Category $category
+     */
+    public function __construct(Category $category)
+    {
+        $this->category = $category;
+    }
 
     /**
      * Display a listing of the resource.
@@ -17,18 +32,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return view('categories.index', compact('categories'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('categories.create');
+        return $this->category->all();
     }
 
     /**
@@ -40,9 +44,8 @@ class CategoryController extends Controller
     public function store(CategoryCreate $request)
     {
         $input = $request->all();
-        Category::create(array_merge($input, ['slug' => Helper::slugit($request->name)]));
-
-        return redirect()->back()->with('status', trans('categories_create.status'));
+        $input['slug'] = Helper::slugit($request->name);
+        return $this->category->create($input);
     }
 
     /**
@@ -53,19 +56,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $category = Category::findOrFail($id);
-        return view('categories.edit', compact('category'));
+        return $this->category->find($id);
     }
 
     /**
@@ -77,8 +68,9 @@ class CategoryController extends Controller
      */
     public function update(CategoryEdit $request, $id)
     {
-        Category::update($request, $id);
-        return redirect()->back()->with('status', trans('categories_edit.status'));
+        $input = $request->all('name');
+        $input['slug'] = Helper::slugit($request->name);
+        return $this->category->update($input, $id);
     }
 
     /**
@@ -89,8 +81,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::findOrfail($id);
-        $category->delete();
+        $this->category->delete($id);
         return response()->json();
     }
 }

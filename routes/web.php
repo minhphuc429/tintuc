@@ -12,25 +12,19 @@
 */
 
 Route::get('/', 'HomeController@index');
-
-Route::prefix('dashboard')->group(function () {
-    Route::middleware('role:administrator')->group(function () {
-        Route::resource('posts', 'PostController');
-        Route::resource('categories', 'CategoryController')->except([
-            'show'
-        ]);
-//
-//        Route::resource('users', 'UserController')->except([
-//            'show'
-//        ]);
-//        Route::resource('roles', 'RoleController')->except([
-//            'show'
-//        ]);
-    });
-
-
-});
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::prefix('api')->group(function () {
+    Route::apiResources([
+        'categories' => 'API\CategoryController',
+        'posts', 'API\PostController'
+    ]);
+});
+
+Route::prefix('dashboard')->group(function () {
+    Route::get('categories', function () {
+        return view('categories');
+    });
+});

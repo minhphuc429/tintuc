@@ -23,9 +23,9 @@
     <!-- Pace style -->
     <link rel="stylesheet" href="{{ asset('dashboard/plugins/pace/pace.min.css') }}">
     <!-- Pure CSS ripple effect -->
-    <link rel="stylesheet" href="{{ asset('assets/css/ripple.min.css') }}">
+    {{--<link rel="stylesheet" href="{{ asset('assets/css/ripple.min.css') }}">--}}
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    {{--<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">--}}
 
 @yield('stylesheet')
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -54,6 +54,7 @@
 </div>
 <!-- ./wrapper -->
 
+<script src="{{ asset('js/app.js') }}"></script>
 <!-- jQuery 2.2.3 -->
 <script src="{{ asset('dashboard/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
 <!-- Bootstrap 3.3.6 -->

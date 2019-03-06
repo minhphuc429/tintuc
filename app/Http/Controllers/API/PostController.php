@@ -1,14 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\PostCreate;
 use App\Http\Requests\PostEdit;
-use App\Models\Post;
-use App\Models\Tag;
+use App\Repositories\PostRepository as Post;
 
 class PostController extends Controller
 {
+    private $post;
+
+    /**
+     * PostController constructor.
+     *
+     * @param Post $post
+     */
+    public function __construct(Post $post)
+    {
+        $this->post = $post;
+    }
 
     /**
      * Display a listing of the resource.
@@ -17,26 +28,19 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
-        return view('posts.index', compact('posts'));
-    }
+        $data = [
+            'posts' => $this->post->all()
+        ];
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $tags = Tag::all();
-        return view('posts.create', compact('tags'));
+        return view('posts.index', $data);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param PostCreate $request
      * @return \Illuminate\Http\Response
+     * @throws \App\Repositories\Exceptions\RepositoryException
      */
     public function store(PostCreate $request)
     {
@@ -63,22 +67,9 @@ class PostController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $post = Post::findOrFail($id);
-
-        return view('posts.edit', compact('post'));
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param PostEdit $request
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
