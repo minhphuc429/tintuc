@@ -43,9 +43,10 @@ class CategoryController extends Controller
      */
     public function store(CategoryCreate $request)
     {
-        $input = $request->all();
-        $input['slug'] = Helper::slugit($request->name);
-        return $this->category->create($input);
+        $input = $request->all(['name', 'slug']);
+//        $input['slug'] = Helper::slugit($request->name);
+        $this->category->create($input);
+        return response()->json(['message' => 'success', 'data' => $input]);
     }
 
     /**
@@ -68,9 +69,10 @@ class CategoryController extends Controller
      */
     public function update(CategoryEdit $request, $id)
     {
-        $input = $request->all('name');
-        $input['slug'] = Helper::slugit($request->name);
-        return $this->category->update($input, $id);
+        $input = $request->all(['name', 'slug']);
+//        $input['slug'] = Helper::slugit($request->name);
+        $this->category->update($input, $id);
+        return response()->json(['message' => 'success', 'data' => $input]);
     }
 
     /**

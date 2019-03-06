@@ -43,18 +43,18 @@
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
-    @include('dashboard.header')
+    @include('dashboard.partial.header')
 
-    @include('dashboard.sidebar')
+    @include('dashboard.partial.sidebar')
 
-    @include('dashboard.content')
+    @include('dashboard.partial.content')
 </div>
 <!-- /.content-wrapper -->
-@include('dashboard.footer')
+@include('dashboard.partial.footer')
 </div>
 <!-- ./wrapper -->
 
-<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ mix('js/app.js') }}"></script>
 <!-- jQuery 2.2.3 -->
 <script src="{{ asset('dashboard/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
 <!-- Bootstrap 3.3.6 -->

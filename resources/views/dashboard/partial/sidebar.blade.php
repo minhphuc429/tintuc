@@ -2,13 +2,17 @@
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-        @if(Auth::user()->hasRole('administrator'))
+
             <ul class="sidebar-menu">
                 <li class="header">Dashboard</li>
                 <li class="{{ Request::segment(2) === 'categories' ? 'active' : null }} treeview ripple">
-                    <a href="{{ action('CategoryController@index') }}"> <i class="fa fa-dashboard"></i>
+                    <a href="{{ route('dashboard.categories') }}"> <i class="fa fa-dashboard"></i>
                         <span>Category</span> </a>
                 </li>
+                {{--<li class="{{ Request::segment(2) === 'posts' ? 'active' : null }} treeview ripple">--}}
+                    {{--<a href="{{ action('API\PostController@index') }}"> <i class="fa fa-dashboard"></i>--}}
+                        {{--<span>Category</span> </a>--}}
+                {{--</li>--}}
                 {{--<li class="{{ Request::segment(2) === 'products' ? 'active' : null }} treeview ripple">--}}
                     {{--<a href="{{ action('ProductController@index') }}"> <i class="fa fa-user"></i>--}}
                         {{--<span>Product</span> </a>--}}
@@ -28,7 +32,7 @@
                     {{--<a href="{{ action('UserController@index') }}"> <i class="fa fa-cubes"></i> <span>User</span> </a>--}}
                 {{--</li>--}}
             {{--</ul>--}}
-        @endif
+
 
         {{--<ul class="sidebar-menu">--}}
             {{--<li class="header">Thông tin tài khoản</li>--}}
