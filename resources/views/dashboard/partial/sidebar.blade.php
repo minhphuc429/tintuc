@@ -2,24 +2,16 @@
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-
             <ul class="sidebar-menu">
                 <li class="header">Dashboard</li>
                 <li class="{{ Request::segment(2) === 'categories' ? 'active' : null }} treeview ripple">
                     <a href="{{ route('dashboard.categories') }}"> <i class="fa fa-dashboard"></i>
                         <span>Category</span> </a>
                 </li>
-                {{--<li class="{{ Request::segment(2) === 'posts' ? 'active' : null }} treeview ripple">--}}
-                    {{--<a href="{{ action('API\PostController@index') }}"> <i class="fa fa-dashboard"></i>--}}
-                        {{--<span>Category</span> </a>--}}
-                {{--</li>--}}
-                {{--<li class="{{ Request::segment(2) === 'products' ? 'active' : null }} treeview ripple">--}}
-                    {{--<a href="{{ action('ProductController@index') }}"> <i class="fa fa-user"></i>--}}
-                        {{--<span>Product</span> </a>--}}
-                {{--</li>--}}
-                {{--<li class="{{ Request::segment(2) === 'orders' ? 'active' : null }} treeview ripple">--}}
-                    {{--<a href="{{ action('OrderController@index') }}"> <i class="fa fa-users"></i> <span>Order</span> </a>--}}
-                {{--</li>--}}
+                <li class="{{ Request::segment(2) === 'posts' ? 'active' : null }} treeview ripple">
+                    <a href="{{ route('dashboard.posts') }}"> <i class="fa fa-dashboard"></i>
+                        <span>Post</span> </a>
+                </li>
             </ul>
 
             {{--<ul class="sidebar-menu">--}}

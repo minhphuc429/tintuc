@@ -32,6 +32,9 @@ Vue.use(VueAxios, axios);
 import CategoryIndex from './components/categories/CategoryIndex.vue';
 import CategoryCreate from './components/categories/CategoryCreate.vue';
 import CategoryEdit from './components/categories/CategoryEdit.vue';
+import postsIndex from './components/posts/PostIndex.vue';
+import PostCreate from './components/posts/PostCreate.vue';
+import PostEdit from './components/posts/PostEdit.vue';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -43,7 +46,10 @@ const routes = [
     {path: '/', components: {categoriesIndex: CategoryIndex}},
     {path: '/create', component: CategoryCreate, name: 'createCategory'},
     {path: '/edit/:id', component: CategoryEdit, name: 'editCategory'},
+    {path: '/posts/', components: postsIndex, name: postsIndex},
+    {path: '/posts/create', component: PostCreate, name: 'createPost'},
+    {path: '/posts/edit/:id', component: PostEdit, name: 'editPost'},
 ];
 
 const router = new VueRouter({routes});
-const app = new Vue({router}).$mount('.wrapper');
+const app = new Vue({router, mode: "history",}).$mount('.wrapper');
