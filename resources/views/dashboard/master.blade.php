@@ -43,14 +43,14 @@
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
-    @include('dashboard.partial.header')
+    @include('dashboard.header')
 
-    @include('dashboard.partial.sidebar')
+    @include('dashboard.sidebar')
 
-    @include('dashboard.partial.content')
+    @include('dashboard.content')
 </div>
 <!-- /.content-wrapper -->
-@include('dashboard.partial.footer')
+@include('dashboard.footer')
 </div>
 <!-- ./wrapper -->
 

@@ -23,13 +23,8 @@ Route::prefix('api')->group(function () {
     ]);
 });
 
-Route::prefix('dashboard')->group(function () {
-    Route::get('categories', function () {
-        return view('dashboard.categories');
-    })->name('dashboard.categories');
-    Route::get('posts', function () {
-        return view('dashboard.posts');
-    })->name('dashboard.posts');
+Route::get('/admin', function () {
+    return view('dashboard');
 });
 
 //Route::get('/', 'API\PostController@index');

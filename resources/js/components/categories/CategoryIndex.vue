@@ -1,6 +1,6 @@
 <template>
     <div>
-        <router-link :to="{name: 'createCategory'}" class="btn btn-success">Create new category</router-link>
+        <router-link :to="{name: 'categories.create'}" class="btn btn-success">Create new category</router-link>
         <table class="table table-bordered table-striped">
             <thead>
             <tr>
@@ -14,7 +14,7 @@
                 <td>{{ category.name }}</td>
                 <td>{{ category.slug }}</td>
                 <td>
-                    <router-link :to="{name: 'editCategory', params: {id: category.id}}" class="btn btn-xs btn-default">
+                    <router-link :to="{name: 'categories.edit', params: {id: category.id}}" class="btn btn-xs btn-default">
                         Edit
                     </router-link>
                     <a href="#"
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+    import axios from 'axios';
     export default {
         data: function () {
             return {

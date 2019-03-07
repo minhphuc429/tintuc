@@ -4,12 +4,12 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+// require('./bootstrap');
 
 window.Vue = require('vue');
 
-Vue.config.devtools = true;
-Vue.config.performance = true;
+// Vue.config.devtools = true;
+// Vue.config.performance = true;
 
 import VueRouter from 'vue-router';
 import VueAxios from 'vue-axios';
@@ -29,12 +29,10 @@ Vue.use(VueAxios, axios);
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-import CategoryIndex from './components/categories/CategoryIndex.vue';
-import CategoryCreate from './components/categories/CategoryCreate.vue';
-import CategoryEdit from './components/categories/CategoryEdit.vue';
-import postsIndex from './components/posts/PostIndex.vue';
-import PostCreate from './components/posts/PostCreate.vue';
-import PostEdit from './components/posts/PostEdit.vue';
+import App from './components/App'
+import CategoryIndex from './components/categories/CategoryIndex'
+import CategoryCreate from './components/categories/CategoryCreate'
+import CategoryEdit from './components/categories/CategoryEdit'
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -42,14 +40,32 @@ import PostEdit from './components/posts/PostEdit.vue';
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const routes = [
-    {path: '/', components: {categoriesIndex: CategoryIndex}},
-    {path: '/create', component: CategoryCreate, name: 'createCategory'},
-    {path: '/edit/:id', component: CategoryEdit, name: 'editCategory'},
-    {path: '/posts/', components: postsIndex, name: postsIndex},
-    {path: '/posts/create', component: PostCreate, name: 'createPost'},
-    {path: '/posts/edit/:id', component: PostEdit, name: 'editPost'},
-];
+const router = new VueRouter({
+    // mode: 'history',
+    routes: [
+        {
+            path: '/',
+            redirect: '/admin',
+        },
+        {
+            path: '/categories',
+            name: 'categories.list',
+            component: CategoryIndex
+        },
+        {
+            path: 'create',
+            name: 'categories.create',
+            component: CategoryCreate
+        },
+        {
+            path: 'edit/:id',
+            name: 'categories.edit',
+            component: CategoryEdit
+        }
+    ],
+});
 
-const router = new VueRouter({routes});
-const app = new Vue({router, mode: "history",}).$mount('.wrapper');
+const app = new Vue({
+    el: '.wrapper',
+    router,
+});

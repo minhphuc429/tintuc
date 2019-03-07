@@ -1,6 +1,6 @@
 <template>
     <div>
-        <router-link to="/" class="btn btn-default">Back</router-link>
+        <router-link :to="{name: 'categories.list'}" class="btn btn-default">Back</router-link>
 
         <form v-on:submit="saveForm()">
             <div class="row">
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+    import axios from 'axios';
     export default {
         data: function () {
             return {
