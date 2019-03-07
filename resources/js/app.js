@@ -4,19 +4,15 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-// require('./bootstrap');
-
-window.Vue = require('vue');
-
-// Vue.config.devtools = true;
-// Vue.config.performance = true;
-
+import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
+Vue.use(CKEditor);
 
 /**
  * The following block of code may be used to automatically register your
@@ -29,10 +25,13 @@ Vue.use(VueAxios, axios);
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-import App from './components/App'
 import CategoryIndex from './components/categories/CategoryIndex'
 import CategoryCreate from './components/categories/CategoryCreate'
 import CategoryEdit from './components/categories/CategoryEdit'
+
+import PostIndex from './components/posts/PostIndex'
+import PostCreate from './components/posts/PostCreate'
+import PostEdit from './components/posts/PostEdit'
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -41,27 +40,40 @@ import CategoryEdit from './components/categories/CategoryEdit'
  */
 
 const router = new VueRouter({
-    // mode: 'history',
+    base: '/admin#',
+    mode: 'history',
     routes: [
-        {
-            path: '/',
-            redirect: '/admin',
-        },
         {
             path: '/categories',
             name: 'categories.list',
             component: CategoryIndex
         },
         {
-            path: 'create',
+            path: '/categories/create',
             name: 'categories.create',
             component: CategoryCreate
         },
         {
-            path: 'edit/:id',
+            path: '/categories/edit/:id',
             name: 'categories.edit',
             component: CategoryEdit
-        }
+        },
+        {
+            path: '/posts',
+            name: 'posts.list',
+            component: PostIndex
+        },
+        {
+            path: '/posts/create',
+            name: 'posts.create',
+            component: PostCreate
+        },
+        {
+            path: '/posts/edit/:id',
+            name: 'posts.edit',
+            component: PostEdit
+        },
+
     ],
 });
 

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PostCreate;
 use App\Http\Requests\PostEdit;
 use App\Repositories\PostRepository as Post;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -28,11 +30,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $data = [
-            'posts' => $this->post->all()
-        ];
-
-        return view('posts.index', $data);
+        return $this->post->all();
     }
 
     /**
@@ -40,30 +38,20 @@ class PostController extends Controller
      *
      * @param PostCreate $request
      * @return \Illuminate\Http\Response
-     * @throws \App\Repositories\Exceptions\RepositoryException
      */
     public function store(PostCreate $request)
     {
-        $post = new Post;
-        $post->title = $request->input('title');
-        $post->content = $request->input('content');
-        $post->description = $request->input('description');
+        $input = $request->all();
 
-        $post->create($request->all());
+        $image = $request->get('thumbnail');
+        $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
 
-        return redirect()->back()->with('status', 'Tạo post thành công');
-    }
+        $input->thumbnail = ($request->get('thumbnail'))->save(public_path('images/').$name);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $post = Post::findOrFail($id);
-        return view('posts.show', compact('post'));
+
+        $this->post->create($input);
+
+        return response()->json(['status' => 'Tạo post thành công']);
     }
 
     /**
@@ -75,13 +63,10 @@ class PostController extends Controller
      */
     public function update(PostEdit $request, $id)
     {
-        $post = Post::findOrFail($id);
-        $post->title = $request->input('title');
-        $post->description = $request->input('description');
-        $post->content = $request->input('content');
-        $post->update();
+        $input = $request->all(['title', 'content', 'description']);
+        $this->post->update($input, $id);
 
-        return redirect()->back()->with('status', 'Cập nhật post thành công');
+        return response()->json(['status' => 'Cập nhật post thành công']);
     }
 
     /**
@@ -92,9 +77,8 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::findOrFail($id);
-        $post->delete();
+        $this->post->delete($id);
 
-        return redirect()->back()->with('status', 'Xóa post thành công');
+        return response()->json(['status' => 'Xóa post thành công']);
     }
 }

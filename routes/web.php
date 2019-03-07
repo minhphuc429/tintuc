@@ -11,13 +11,14 @@
 |
 */
 
-Route::get('/', 'HomeController@index');
+//Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
 Route::prefix('api')->group(function () {
     Route::apiResources([
+        'tags' => 'API\TagController',
         'categories' => 'API\CategoryController',
         'posts' => 'API\PostController'
     ]);

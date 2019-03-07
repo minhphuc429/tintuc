@@ -31,9 +31,10 @@ class PostsTableSeeder extends Seeder
                 'content' => $faker->text($maxNbChars = 1000),
                 'slug' => str_slug($title),
                 'description' => $faker->text($maxNbChars = 200),
-                'image' => 'http://via.placeholder.com/640x480',
+                'thumbnail' => 'http://via.placeholder.com/640x480',
                 'published' => rand(0, 1),
-                'user_id' => $author1->id
+                'user_id' => $author1->id,
+                'category_id' => rand(1, 5),
             ]);
             $title = $faker->sentence($nbWords = 6, $variableNbWords = true);
             $post = $this->post->create([
@@ -41,9 +42,10 @@ class PostsTableSeeder extends Seeder
                 'content' => $faker->text($maxNbChars = 1000),
                 'slug' => str_slug($title),
                 'description' => $faker->text($maxNbChars = 200),
-                'image' => 'http://via.placeholder.com/640x480',
+                'thumbnail' => 'http://via.placeholder.com/640x480',
                 'published' => rand(0, 1),
-                'user_id' => $author2->id
+                'user_id' => $author2->id,
+                'category_id' => rand(1, 5),
             ]);
         }
     }

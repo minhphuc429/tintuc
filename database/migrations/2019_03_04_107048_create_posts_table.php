@@ -18,11 +18,11 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('description');
-            $table->string('image');
+            $table->string('thumbnail');
             $table->longText('content');
             $table->boolean('published')->default(false);
             $table->unsignedBigInteger('user_id');
-//            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('category_id');
 //            $table->foreign('category_id')
 //                  ->references('id')->on('categories')
 //                  ->onDelete('cascade');

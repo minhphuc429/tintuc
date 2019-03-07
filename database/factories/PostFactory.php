@@ -20,9 +20,10 @@ $factory->define(Post::class, function (Faker $faker) {
         'title' => $faker->text($maxNbChars = 80),
         'slug' => $faker->slug,
         'description' => $faker->text($maxNbChars = 200),
-        'image' => 'http://via.placeholder.com/640x480', //
+        'thumbnail' => 'http://via.placeholder.com/640x480', //
         'content' => $faker->realText($maxNbChars = 4000, $indexSize = 2),
         'published' => rand(0, 1),
         'user_id' => rand(1, 2),
+        'category_id' => rand(1, 5),
     ];
 });
