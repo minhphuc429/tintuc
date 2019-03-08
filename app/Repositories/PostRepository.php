@@ -15,10 +15,20 @@ class PostRepository extends Repository
     /**
      * Specify Model class name
      *
-     * @return mixed
+     * @return string
      */
-    function model()
-    {
-        return 'App\Models\Post';
-    }
+    protected $model = \App\Models\Post::class;
+
+    /**
+     * Valid searchable columns
+     *
+     * @return array
+     */
+    protected $searchable = [
+        'query' => [
+            'title',
+            'description',
+            'content'
+        ],
+    ];
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Search;
 use App\Repositories\PostRepository as Post;
-use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
@@ -19,13 +19,21 @@ class IndexController extends Controller
         $this->post = $post;
     }
 
-    public function frontPage() {
+    public function frontPage()
+    {
         $posts = $this->post->paginate(5);
         return view('index', compact('posts'));
     }
 
-    public function show($id) {
+    public function show($id)
+    {
         $post = $this->post->find($id);
         return view('single', compact('post'));
+    }
+
+    public function search(Search $request)
+    {
+        $posts = $this->post->search($request->get('query'))->paginate(5);
+        if ($posts) return view('search')->with(['posts' => $posts]);
     }
 }

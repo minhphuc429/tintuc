@@ -15,10 +15,7 @@ class UserRepository extends Repository
     /**
      * Specify Model class name
      *
-     * @return mixed
+     * @return string
      */
-    function model()
-    {
-        return 'App\Models\User';
-    }
+    protected $model = \App\Models\User::class;
 }

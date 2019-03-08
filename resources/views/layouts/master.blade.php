@@ -28,6 +28,20 @@
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <style>
+        ul.pagination {
+            margin-top: 20px;
+            justify-content: center;
+            text-align: center;
+        }
+        ul > li.page-item.active > span {
+            background-color: #f6214b !important;
+            border-color: #f6214b !important;
+        }
+        a.page-link {
+            color: #222222 !important;
+        }
+    </style>
 </head>
 <body>
 @include('layouts.header')

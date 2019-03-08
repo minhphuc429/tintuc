@@ -15,10 +15,7 @@ class TagRepository extends Repository
     /**
      * Specify Model class name
      *
-     * @return mixed
+     * @return string
      */
-    function model()
-    {
-        return 'App\Models\Tag';
-    }
+    protected $model = \App\Models\Tag::class;
 }

@@ -1,5 +1,6 @@
 <?php
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,7 +18,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/', 'IndexController@frontPage');
 Route::get('/posts/{id}', 'IndexController@show')->name('singlePost');
-
+Route::get('/search', 'IndexController@search');
 
 Route::prefix('api')->group(function () {
     Route::apiResources([

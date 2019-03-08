@@ -15,10 +15,7 @@ class RoleRepository extends Repository
     /**
      * Specify Model class name
      *
-     * @return mixed
+     * @return string
      */
-    function model()
-    {
-        return 'App\Models\Role';
-    }
+    protected $model = \App\Models\Role::class;
 }

@@ -12,10 +12,10 @@
                 </div>
                 <!-- End banner-ads Area -->
                 <!-- Start popular-post Area -->
-                @include('layouts.popular-post')
+                @yield('popular-post')
                 <!-- End popular-post Area -->
                 <!-- Start relavent-story-post Area -->
-                @include('layouts.relavent-story')
+                @yield('relavent-story')
                 <!-- End relavent-story-post Area -->
             </div>
             @include('layouts.sidebars')

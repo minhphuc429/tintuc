@@ -1,4 +1,5 @@
 @extends('layouts.master')
+
 @section('content')
     @foreach($posts as $post)
         <div class="single-latest-post row align-items-center">
@@ -26,13 +27,5 @@
             </div>
         </div>
     @endforeach
-    {{ $posts->links() }}
-@endsection
-
-@section('popular-post')
-    {{--@include('layouts.popular-post')--}}
-@endsection
-
-@section('relavent-story')
-    {{--@include('layouts.relavent-story')--}}
+    {{ $posts->appends(Request::only('query'))->links() }}
 @endsection

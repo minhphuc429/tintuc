@@ -9,7 +9,7 @@
             <ul class="tags">
                 <li><a href="#">Food Habit</a></li>
             </ul>
-            <a href="image-post.html">
+            <a href="#">
                 <h3>A Discount Toner Cartridge Is Better Than Ever.</h3>
             </a>
             <ul class="meta">
@@ -31,7 +31,7 @@
                 </ul>
             </div>
             <div class="details">
-                <a href="image-post.html">
+                <a href="#">
                     <h4>A Discount Toner Cartridge Is
                         Better Than Ever.</h4>
                 </a>
@@ -56,7 +56,7 @@
                 </ul>
             </div>
             <div class="details">
-                <a href="image-post.html">
+                <a href="#">
                     <h4>A Discount Toner Cartridge Is
                         Better Than Ever.</h4>
                 </a>
