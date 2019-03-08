@@ -1,31 +1,35 @@
 <template>
-    <div>
-        <router-link :to="{name: 'categories.create'}" class="btn btn-success">Create new category</router-link>
-        <table class="table table-bordered table-striped">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Slug</th>
-                <th width="100">&nbsp;</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(category, index) in categories">
-                <td>{{ category.name }}</td>
-                <td>{{ category.slug }}</td>
-                <td>
-                    <router-link :to="{name: 'categories.edit', params: {id: category.id}}" class="btn btn-xs btn-default">
-                        Edit
-                    </router-link>
-                    <a href="#"
-                       class="btn btn-xs btn-danger"
-                       v-on:click="deleteEntry(category.id, index)">
-                        Delete
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="row">
+        <div class="col-md-12">
+            <router-link :to="{name: 'categories.create'}" class="btn btn-success">Create new category</router-link>
+            <div class="box">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Slug</th>
+                        <th width="100">&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(category, index) in categories">
+                        <td>{{ category.name }}</td>
+                        <td>{{ category.slug }}</td>
+                        <td>
+                            <router-link :to="{name: 'categories.edit', params: {id: category.id}}" class="btn btn-xs btn-default">
+                                Edit
+                            </router-link>
+                            <a href="#"
+                               class="btn btn-xs btn-danger"
+                               v-on:click="deleteEntry(category.id, index)">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </template>
 

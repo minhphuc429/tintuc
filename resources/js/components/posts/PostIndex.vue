@@ -1,39 +1,43 @@
 <template>
-    <div>
-        <router-link :to="{name: 'posts.create'}" class="btn btn-success">Create new post</router-link>
-        <table class="table table-bordered table-striped">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Slug</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th>published</th>
-                <th width="100">&nbsp;</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(post, index) in posts">
-                <td>{{ post.id }}</td>
-                <td>{{ post.title }}</td>
-                <td>{{ post.slug }}</td>
-                <td>{{ post.description }}</td>
-                <td><img v-bind:src="post.thumbnail" alt="" class="img-responsive"></td>
-                <td>{{ post.published }}</td>
-                <td>
-                    <router-link :to="{name: 'posts.edit', params: {id: post.id}}" class="btn btn-xs btn-default">
-                        Edit
-                    </router-link>
-                    <a href="#"
-                       class="btn btn-xs btn-danger"
-                       v-on:click="deleteEntry(post.id, index)">
-                        Delete
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="row">
+        <div class="col-md-12">
+            <router-link :to="{name: 'posts.create'}" class="btn btn-success">Create new post</router-link>
+            <div class="box">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Title</th>
+                        <th>Slug</th>
+                        <th>Description</th>
+                        <th>Image</th>
+                        <th>published</th>
+                        <th width="100">&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(post, index) in posts">
+                        <td>{{ post.id }}</td>
+                        <td>{{ post.title }}</td>
+                        <td>{{ post.slug }}</td>
+                        <td>{{ post.description }}</td>
+                        <td><img v-bind:src="post.thumbnail" alt="" class="img-responsive"></td>
+                        <td>{{ post.published }}</td>
+                        <td>
+                            <router-link :to="{name: 'posts.edit', params: {id: post.id}}" class="btn btn-xs btn-default">
+                                Edit
+                            </router-link>
+                            <a href="#"
+                               class="btn btn-xs btn-danger"
+                               v-on:click="deleteEntry(post.id, index)">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </template>
 

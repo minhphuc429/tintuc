@@ -1,26 +1,29 @@
 <template>
-    <div>
-        <router-link :to="{name: 'categories.list'}" class="btn btn-default">Back</router-link>
-
-        <form v-on:submit="saveForm()">
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    <label class="control-label">Category name</label>
-                    <input type="text" v-model="category.name" class="form-control">
-                </div>
+    <div class="row">
+        <div class="col-md-12">
+            <router-link :to="{name: 'categories.list'}" class="btn btn-default">Back</router-link>
+            <div class="box">
+                <form v-on:submit="saveForm()">
+                    <div class="row">
+                        <div class="col-xs-12 form-group">
+                            <label class="control-label">Category name</label>
+                            <input type="text" v-model="category.name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 form-group">
+                            <label class="control-label">Category slug</label>
+                            <input type="text" v-model="category.slug" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 form-group">
+                            <button class="btn btn-success">Update</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    <label class="control-label">Category slug</label>
-                    <input type="text" v-model="category.slug" class="form-control">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    <button class="btn btn-success">Update</button>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 </template>
 
