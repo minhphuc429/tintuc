@@ -26,7 +26,7 @@ class PostCreate extends FormRequest
         return [
             'title' => 'required',
             'slug' => 'required',
-            'thumbnail' => 'file|required',
+            'thumbnail' => 'image',
             'description' => 'required',
             'content' => 'required',
             'category_id' => 'required',

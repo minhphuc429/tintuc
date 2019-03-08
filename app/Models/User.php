@@ -53,12 +53,13 @@ class User extends Authenticatable
 
     /**
      * Checks if User has access to $permissions.
+     * @param array $permissions
+     * @return bool
      */
-    public function hasAccess(array $permissions) : bool
+    public function hasAccess(array $permissions)
     {
-        // check if the permission is available in any role
-        foreach ($this->roles as $role) {
-            if($role->hasAccess($permissions)) {
+        foreach($this->roles as $role){
+            if($role->hasAccess($permissions)){
                 return true;
             }
         }
@@ -67,9 +68,11 @@ class User extends Authenticatable
 
     /**
      * Checks if the user belongs to role.
+     * @param string $roleSlug
+     * @return bool
      */
-    public function inRole(string $roleSlug)
+    public function inRole($roleSlug)
     {
-        return $this->roles()->where('slug', $roleSlug)->count() == 1;
+        return $this->roles()->where('slug',$roleSlug)->count()==1;
     }
 }

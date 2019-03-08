@@ -1,6 +1,6 @@
 <template>
     <div>
-        <router-link :to="{name: 'categories.list'}" class="btn btn-default">Back</router-link>
+        <router-link :to="{name: 'posts.list'}" class="btn btn-default">Back</router-link>
 
         <form v-on:submit="saveForm() ">
             <div class="col-md-8">
@@ -29,7 +29,7 @@
                             <img :src="post.thumbnail" class="img-responsive" height="70" width="90">
                         </div>
                         <div class="col-md-6">
-                            <input type="file" v-on:change="onImageChange" class="form-control">
+                            <input type="file" v-on:change="onImageChange" id="thumbnail" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -61,17 +61,27 @@
 <script>
     import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
     import axios from 'axios';
+
     export default {
         mounted() {
             let app = this;
             let id = app.$route.params.id;
-            app.categoryId = id;
+            app.postId = id;
             axios.get('/api/posts/' + id)
                 .then(function (resp) {
-                    app.category = resp.data;
+                    app.post = resp.data;
                 })
                 .catch(function () {
-                    alert("Could not load your category")
+                    alert("Could not load your post")
+                });
+
+            axios.get('/api/categories')
+                .then(function (resp) {
+                    app.categories = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Could not load categories");
                 });
         },
         data: function () {
@@ -97,23 +107,55 @@
                     thumbnail: '',
                     description: '',
                     category_id: '',
-                    content: '<p>Content of the editor.</p>'
+                    content: ''
                 }
             }
         },
         methods: {
+            onImageChange(e) {
+                let files = e.target.files || e.dataTransfer.files;
+                if (!files.length)
+                    return;
+                this.createImage(files[0]);
+            },
+            createImage(file) {
+                let reader = new FileReader();
+                let vm = this;
+                reader.onload = (e) => {
+                    vm.post.thumbnail = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            },
+            handleFileChange(event) {
+                //you can access the file in using event.target.files[0]
+                // this.post.thumbnail = event.target.files[0];
+                this.post.thumbnail = document.getElementById('thumbnail').files[0];
+                console.log(this.post.thumbnail)
+            },
             saveForm() {
                 event.preventDefault();
-                var app = this;
-                var newPost = app.post;
-                axios.patch('/api/posts/' + app.postId, newPost)
-                    .then(function (resp) {
-                        // app.$router.replace('/');
-                    })
-                    .catch(function (resp) {
-                        console.log(resp);
-                        alert("Could not create your post");
-                    });
+                // var app = this;
+                // var newPost = app.post;
+
+                let thumbnail = document.getElementById("thumbnail").files[0];
+                let data = new FormData();
+                data.append('thumbnail', thumbnail, thumbnail.name);
+                data.append('title', this.post.title);
+                data.append('slug', this.post.slug);
+                data.append('description', this.post.description);
+                data.append('content', this.post.content);
+                data.append('category_id', this.post.category_id);
+
+                axios.patch('/api/posts/' + app.postId, data, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(function (resp) {
+                    // app.$router.replace('/');
+                }).catch(function (resp) {
+                    console.log(resp);
+                    alert("Could not create your post");
+                });
             }
         }
     }

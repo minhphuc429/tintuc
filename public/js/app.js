@@ -2137,14 +2137,28 @@ __webpack_require__.r(__webpack_exports__);
     },
     handleFileChange: function handleFileChange(event) {
       //you can access the file in using event.target.files[0]
-      this.post.thumbnail = event.target.files[0];
+      // this.post.thumbnail = event.target.files[0];
+      this.post.thumbnail = document.getElementById('thumbnail').files[0];
       console.log(this.post.thumbnail);
     },
     saveForm: function saveForm() {
-      event.preventDefault();
-      var app = this;
-      var newPost = app.post;
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/posts', newPost).then(function (resp) {// app.$router.push({path: '/'});
+      event.preventDefault(); // var app = this;
+      // var newPost = app.post;
+
+      var thumbnail = document.getElementById("thumbnail").files[0];
+      var data = new FormData();
+      data.append('thumbnail', thumbnail, thumbnail.name);
+      data.append('title', this.post.title);
+      data.append('slug', this.post.slug);
+      data.append('description', this.post.description);
+      data.append('content', this.post.content);
+      data.append('category_id', this.post.category_id);
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/posts', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (resp) {
+        console.log(resp); // app.$router.push({path: '/'});
       }).catch(function (resp) {
         console.log(resp);
         alert("Could not create your post");
@@ -2234,11 +2248,17 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var app = this;
     var id = app.$route.params.id;
-    app.categoryId = id;
+    app.postId = id;
     axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/posts/' + id).then(function (resp) {
-      app.category = resp.data;
+      app.post = resp.data;
     }).catch(function () {
-      alert("Could not load your category");
+      alert("Could not load your post");
+    });
+    axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/categories').then(function (resp) {
+      app.categories = resp.data;
+    }).catch(function (resp) {
+      console.log(resp);
+      alert("Could not load categories");
     });
   },
   data: function data() {
@@ -2263,16 +2283,49 @@ __webpack_require__.r(__webpack_exports__);
         thumbnail: '',
         description: '',
         category_id: '',
-        content: '<p>Content of the editor.</p>'
+        content: ''
       }
     };
   },
   methods: {
+    onImageChange: function onImageChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.createImage(files[0]);
+    },
+    createImage: function createImage(file) {
+      var reader = new FileReader();
+      var vm = this;
+
+      reader.onload = function (e) {
+        vm.post.thumbnail = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    },
+    handleFileChange: function handleFileChange(event) {
+      //you can access the file in using event.target.files[0]
+      // this.post.thumbnail = event.target.files[0];
+      this.post.thumbnail = document.getElementById('thumbnail').files[0];
+      console.log(this.post.thumbnail);
+    },
     saveForm: function saveForm() {
-      event.preventDefault();
-      var app = this;
-      var newPost = app.post;
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.patch('/api/posts/' + app.postId, newPost).then(function (resp) {// app.$router.replace('/');
+      event.preventDefault(); // var app = this;
+      // var newPost = app.post;
+
+      var thumbnail = document.getElementById("thumbnail").files[0];
+      var data = new FormData();
+      data.append('thumbnail', thumbnail, thumbnail.name);
+      data.append('title', this.post.title);
+      data.append('slug', this.post.slug);
+      data.append('description', this.post.description);
+      data.append('content', this.post.content);
+      data.append('category_id', this.post.category_id);
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.patch('/api/posts/' + app.postId, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (resp) {// app.$router.replace('/');
       }).catch(function (resp) {
         console.log(resp);
         alert("Could not create your post");
@@ -4001,7 +4054,7 @@ var render = function() {
                 _c("div", { staticClass: "col-md-6" }, [
                   _c("input", {
                     staticClass: "form-control",
-                    attrs: { type: "file" },
+                    attrs: { type: "file", id: "thumbnail" },
                     on: { change: _vm.onImageChange }
                   })
                 ])
@@ -4124,7 +4177,7 @@ var render = function() {
         "router-link",
         {
           staticClass: "btn btn-default",
-          attrs: { to: { name: "categories.list" } }
+          attrs: { to: { name: "posts.list" } }
         },
         [_vm._v("Back")]
       ),
@@ -4234,7 +4287,7 @@ var render = function() {
                 _c("div", { staticClass: "col-md-6" }, [
                   _c("input", {
                     staticClass: "form-control",
-                    attrs: { type: "file" },
+                    attrs: { type: "file", id: "thumbnail" },
                     on: { change: _vm.onImageChange }
                   })
                 ])
@@ -4380,7 +4433,7 @@ var render = function() {
               _c("td", [
                 _c("img", {
                   staticClass: "img-responsive",
-                  attrs: { src: post.image, alt: "" }
+                  attrs: { src: post.thumbnail, alt: "" }
                 })
               ]),
               _vm._v(" "),

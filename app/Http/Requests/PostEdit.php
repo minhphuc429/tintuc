@@ -25,8 +25,11 @@ class PostEdit extends FormRequest
     {
         return [
             'title' => 'required',
+            'slug' => 'required',
+            'thumbnail' => 'image',
             'description' => 'required',
             'content' => 'required',
+            'category_id' => 'required',
         ];
     }
 }

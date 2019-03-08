@@ -14,17 +14,18 @@ class Role extends Model
         return $this->belongsToMany('App\Models\User');
     }
 
-    public function hasAccess(array $permissions) : bool
+    public function hasAccess(array $permissions)
     {
-        foreach ($permissions as $permission) {
-            if ($this->hasPermission($permission))
+        foreach($permissions as $permission){
+            if($this->hasPermission($permission)){
                 return true;
+            }
         }
         return false;
     }
-
-    private function hasPermission(string $permission) : bool
+    protected function hasPermission(string $permission)
     {
-        return $this->permissions[$permission] ?? false;
+        $permissions= json_decode($this->permissions,true);
+        return $permissions[$permission]??false;
     }
 }

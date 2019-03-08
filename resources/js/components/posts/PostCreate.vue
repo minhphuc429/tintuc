@@ -29,7 +29,7 @@
                             <img :src="post.thumbnail" class="img-responsive" height="70" width="90">
                         </div>
                         <div class="col-md-6">
-                            <input type="file" v-on:change="onImageChange" class="form-control">
+                            <input type="file" v-on:change="onImageChange" id="thumbnail" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                 </div>
 
                 <!--<div class="form-group">-->
-                    <!--<label>Post Tag</label>-->
+                <!--<label>Post Tag</label>-->
 
                 <!--</div>-->
 
@@ -125,21 +125,35 @@
             },
             handleFileChange(event) {
                 //you can access the file in using event.target.files[0]
-                this.post.thumbnail = event.target.files[0];
+                // this.post.thumbnail = event.target.files[0];
+                this.post.thumbnail = document.getElementById('thumbnail').files[0];
                 console.log(this.post.thumbnail)
             },
             saveForm() {
                 event.preventDefault();
-                var app = this;
-                var newPost = app.post;
-                axios.post('/api/posts', newPost)
-                    .then(function (resp) {
-                        // app.$router.push({path: '/'});
-                    })
-                    .catch(function (resp) {
-                        console.log(resp);
-                        alert("Could not create your post");
-                    });
+                // var app = this;
+                // var newPost = app.post;
+
+                let thumbnail = document.getElementById("thumbnail").files[0];
+                let data = new FormData();
+                data.append('thumbnail', thumbnail, thumbnail.name);
+                data.append('title', this.post.title);
+                data.append('slug', this.post.slug);
+                data.append('description', this.post.description);
+                data.append('content', this.post.content);
+                data.append('category_id', this.post.category_id);
+
+                axios.post('/api/posts', data, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(function (resp) {
+                    console.log(resp)
+                    // app.$router.push({path: '/'});
+                }).catch(function (resp) {
+                    console.log(resp);
+                    alert("Could not create your post");
+                });
             }
         }
     }

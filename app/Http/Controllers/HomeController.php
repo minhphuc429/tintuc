@@ -3,17 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Repositories\PostRepository as Post;
 
 class HomeController extends Controller
 {
+    private $post;
+
     /**
      * Create a new controller instance.
      *
-     * @return void
+     * @param Post $post
      */
-    public function __construct()
+    public function __construct(Post $post)
     {
         $this->middleware('auth');
+        $this->post = $post;
     }
 
     /**

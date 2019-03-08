@@ -19,7 +19,7 @@
                 <td>{{ post.title }}</td>
                 <td>{{ post.slug }}</td>
                 <td>{{ post.description }}</td>
-                <td><img v-bind:src="post.image" alt="" class="img-responsive"></td>
+                <td><img v-bind:src="post.thumbnail" alt="" class="img-responsive"></td>
                 <td>{{ post.published }}</td>
                 <td>
                     <router-link :to="{name: 'posts.edit', params: {id: post.id}}" class="btn btn-xs btn-default">

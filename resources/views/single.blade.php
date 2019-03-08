@@ -37,7 +37,45 @@
     @include('layouts.top-post')
     <!-- End top-post Area -->
     <!-- Start latest-post Area -->
-    @include('layouts.latest-post')
+    <section class="latest-post-area pb-120">
+        <div class="container no-padding">
+            <div class="row">
+                <div class="col-lg-8 post-list">
+                    <!-- Start single-post Area -->
+                    <div class="single-post-wrap">
+                        <div class="feature-img-thumb relative">
+                            <div class="overlay overlay-bg"></div>
+                            <img class="img-fluid" src="{{ $post->thumbnail }}" alt="">
+                        </div>
+                        <div class="content-wrap">
+                            <ul class="tags mt-10">
+                                <li><a href="#">Food Habit</a></li>
+                            </ul>
+                            <a href="{{ route('singlePost', $post->id) }}">
+                                <h3>{{ $post->title }}</h3>
+                            </a>
+                            <ul class="meta pb-20">
+                                <li><a href="#"><span class="lnr lnr-user"></span>Mark wiens</a></li>
+                                <li><a href="#"><span class="lnr lnr-calendar-full"></span>03 April, 2018</a></li>
+                                <li><a href="#"><span class="lnr lnr-bubble"></span>06 </a></li>
+                            </ul>
+                            {{ $post->content }}
+                            <div class="navigation-wrap justify-content-between d-flex">
+                                <a class="prev" href="#"><span class="lnr lnr-arrow-left"></span>Prev Post</a>
+                                <a class="next" href="#">Next Post<span class="lnr lnr-arrow-right"></span></a>
+                            </div>
+
+                            @include('layouts.comment-area')
+                        </div>
+                        @include('layouts.comment-form')
+                    </div>
+                    <!-- End single-post Area -->
+                </div>
+                @include('layouts.sidebars')
+            </div>
+        </div>
+    </section>
+
     <!-- End latest-post Area -->
 </div>
 

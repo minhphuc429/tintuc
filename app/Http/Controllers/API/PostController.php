@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PostCreate;
 use App\Http\Requests\PostEdit;
 use App\Repositories\PostRepository as Post;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -20,6 +20,7 @@ class PostController extends Controller
      */
     public function __construct(Post $post)
     {
+        $this->middleware('auth');
         $this->post = $post;
     }
 
@@ -30,7 +31,12 @@ class PostController extends Controller
      */
     public function index()
     {
-        return $this->post->all();
+        $posts = $this->post->all();
+        foreach ($posts as $post) {
+            if ($c = preg_match_all("/(public\/images\/)/is", $post->thumbnail, $matches))
+                $post->thumbnail = Storage::url($post->thumbnail);
+        }
+        return $posts;
     }
 
     /**
@@ -41,17 +47,27 @@ class PostController extends Controller
      */
     public function store(PostCreate $request)
     {
-        $input = $request->all();
+        if (Auth::user()->can('post.create')) {
+            $input = $request->all();
+            $input['user_id'] = Auth::user()->id;
+            $input['thumbnail'] = $request->file('thumbnail')->store('public/images');
+            $this->post->create($input);
 
-        $image = $request->get('thumbnail');
-        $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+            return response()->json(['status' => 'Tạo post thành công']);
+        } else {
+            return response()->json(['status' => 'Bạn không có quyền thực hiện hành động này'], 403);
+        }
+    }
 
-        $input->thumbnail = ($request->get('thumbnail'))->save(public_path('images/').$name);
-
-
-        $this->post->create($input);
-
-        return response()->json(['status' => 'Tạo post thành công']);
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        return $this->post->find($id);
     }
 
     /**
@@ -63,10 +79,14 @@ class PostController extends Controller
      */
     public function update(PostEdit $request, $id)
     {
-        $input = $request->all(['title', 'content', 'description']);
-        $this->post->update($input, $id);
+        if (Auth::user()->can('post.update')) {
+            $input = $request->all(['title', 'content', 'description']);
+            $this->post->update($input, $id);
 
-        return response()->json(['status' => 'Cập nhật post thành công']);
+            return response()->json(['status' => 'Cập nhật post thành công']);
+        } else {
+            return response()->json(['status' => 'Bạn không có quyền thực hiện hành động này'], 403);
+        }
     }
 
     /**

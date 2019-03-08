@@ -11,10 +11,13 @@
 |
 */
 
-//Route::get('/', 'HomeController@index');
+Auth::routes();
+
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
+Route::get('/', 'IndexController@frontPage');
+Route::get('/posts/{id}', 'IndexController@show')->name('singlePost');
+
 
 Route::prefix('api')->group(function () {
     Route::apiResources([
@@ -26,29 +29,35 @@ Route::prefix('api')->group(function () {
 
 Route::get('/admin', function () {
     return view('dashboard');
-});
+})->middleware('auth');
 
-//Route::get('/', 'API\PostController@index');
-//Route::get('/posts', 'API\PostController@index')->name('list_posts');
-//Route::group(['prefix' => 'posts'], function () {
-//    Route::get('/drafts', 'API\PostController@drafts')
-//        ->name('list_drafts')
-//        ->middleware('auth');
-//    Route::get('/show/{id}', 'API\PostController@show')
-//        ->name('show_post');
-//    Route::get('/create', 'API\PostController@create')
-//        ->name('create_post')
-//        ->middleware('can:post.create');
-//    Route::post('/create', 'API\PostController@store')
-//        ->name('store_post')
-//        ->middleware('can:post.create');
-//    Route::get('/edit/{post}', 'API\PostController@edit')
-//        ->name('edit_post')
-//        ->middleware('can:post.update,post');
-//    Route::post('/edit/{post}', 'API\PostController@update')
-//        ->name('update_post')
-//        ->middleware('can:post.update,post');
-//    Route::get('/publish/{post}', 'API\PostController@publish')
-//        ->name('publish_post')
-//        ->middleware('can:post.publish');
-//});
+/*Route::get('/', 'API\PostController@index');
+Route::get('/posts', 'API\PostController@index')->name('list_posts');
+Route::group(['prefix' => 'posts'], function () {
+    Route::get('/drafts', 'API\PostController@drafts')
+        ->name('list_drafts')
+        ->middleware('auth');
+
+    Route::get('/show/{id}', 'API\PostController@show')
+        ->name('show_post');
+
+    Route::get('/create', 'API\PostController@create')
+        ->name('create_post')
+        ->middleware('can:post.create');
+
+    Route::post('/create', 'API\PostController@store')
+        ->name('store_post')
+        ->middleware('can:post.create');
+
+    Route::get('/edit/{post}', 'API\PostController@edit')
+        ->name('edit_post')
+        ->middleware('can:post.update,post');
+
+    Route::post('/edit/{post}', 'API\PostController@update')
+        ->name('update_post')
+        ->middleware('can:post.update,post');
+
+    Route::get('/publish/{post}', 'API\PostController@publish')
+        ->name('publish_post')
+        ->middleware('can:post.publish');
+});*/
