@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <router-link :to="{name: 'posts.list'}" class="btn btn-default">Back</router-link>
             <div class="box">
-                <form v-on:submit="saveForm() ">
+                <form v-on:submit.prevent="saveForm()" enctype="multipart/form-data">
                     <div class="col-md-8">
                         <div class="form-group">
                             <label>Post Content</label>
@@ -11,6 +11,13 @@
                         </div>
                     </div>
                     <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Post Visibility</label>
+                            <select class="form-control" v-model="post.published" id="published">
+                                <option :selected="post.published === 1" value="1">Public</option>
+                                <option :selected="post.published === 0" value="0">Draft</option>
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label>Post Title</label>
                             <input type="text" v-model="post.title" class="form-control">
@@ -23,14 +30,13 @@
 
                         <div class="form-group">
                             <label>Post thumbnail</label>
-                            <!--<input type="file" @change="handleFileChange"/>-->
-
                             <div class="row">
                                 <div class="col-md-3" v-if="post.thumbnail">
                                     <img :src="post.thumbnail" class="img-responsive" height="70" width="90">
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="file" v-on:change="onImageChange" id="thumbnail" class="form-control">
+                                    <input type="file" v-on:change="onImageChange" id="thumbnail" ref="thumbnail"
+                                           class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -42,7 +48,6 @@
 
                         <!--<div class="form-group">-->
                         <!--<label>Post Tag</label>-->
-
                         <!--</div>-->
 
                         <div class="form-group">
@@ -63,14 +68,13 @@
 
 <script>
     import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-    import axios from 'axios';
 
     export default {
         mounted() {
             let app = this;
             let id = app.$route.params.id;
-            app.postId = id;
-            axios.get('/api/posts/' + id)
+            app.post.id = id;
+            this.axios.get('/api/posts/' + id)
                 .then(function (resp) {
                     app.post = resp.data;
                 })
@@ -78,7 +82,7 @@
                     alert("Could not load your post")
                 });
 
-            axios.get('/api/categories')
+            this.axios.get('/api/categories')
                 .then(function (resp) {
                     app.categories = resp.data;
                 })
@@ -103,14 +107,15 @@
                     name: '',
                     slug: ''
                 },
-                postId: '',
                 post: {
+                    id: '',
                     title: '',
                     slug: '',
                     thumbnail: '',
                     description: '',
                     category_id: '',
-                    content: ''
+                    content: '',
+                    published: ''
                 }
             }
         },
@@ -130,34 +135,33 @@
                 reader.readAsDataURL(file);
             },
             handleFileChange(event) {
-                //you can access the file in using event.target.files[0]
-                // this.post.thumbnail = event.target.files[0];
-                this.post.thumbnail = document.getElementById('thumbnail').files[0];
-                console.log(this.post.thumbnail)
+                this.post.thumbnail = this.$refs.thumbnail.files[0];
             },
             saveForm() {
-                event.preventDefault();
-                // var app = this;
-                // var newPost = app.post;
+                let app = this;
+
+                let formData = new FormData();
 
                 let thumbnail = document.getElementById("thumbnail").files[0];
-                let data = new FormData();
-                data.append('thumbnail', thumbnail, thumbnail.name);
-                data.append('title', this.post.title);
-                data.append('slug', this.post.slug);
-                data.append('description', this.post.description);
-                data.append('content', this.post.content);
-                data.append('category_id', this.post.category_id);
 
-                axios.patch('/api/posts/' + app.postId, data, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
+                formData.append('_method', 'PATCH');
+                formData.append('thumbnail', thumbnail, thumbnail.name);
+                formData.append('title', this.post.title);
+                formData.append('slug', this.post.slug);
+                formData.append('description', this.post.description);
+                formData.append('content', this.post.content);
+                formData.append('category_id', this.post.category_id);
+                formData.append('published', this.post.published);
+
+                this.axios.post(`/api/posts/${app.post.id}`, formData, {
+                    headers: {'content-type': 'multipart/form-data'}
                 }).then(function (resp) {
-                    // app.$router.replace('/');
-                }).catch(function (resp) {
-                    console.log(resp);
-                    alert("Could not create your post");
+                    alert(resp.data.message)
+                    // app.$router.replace('/posts');
+                }).catch(function (err) {
+                    console.log(err);
+                    // alert("Could not update your post");
+                    alert(err.response.data.message)
                 });
             }
         }

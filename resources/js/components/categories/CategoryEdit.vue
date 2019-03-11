@@ -58,7 +58,7 @@
                 var newCategory = app.category;
                 axios.patch('/api/categories/' + app.categoryId, newCategory)
                     .then(function (resp) {
-                        app.$router.replace('/');
+                        app.$router.replace('/categories');
                     })
                     .catch(function (resp) {
                         console.log(resp);

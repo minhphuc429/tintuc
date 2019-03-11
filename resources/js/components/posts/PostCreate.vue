@@ -63,7 +63,6 @@
 
 <script>
     import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-    import axios from 'axios';
 
     export default {
         data: function () {
@@ -102,7 +101,7 @@
             //         console.log(resp);
             //         alert("Could not load tags");
             //     });
-            axios.get('/api/categories')
+            this.axios.get('/api/categories')
                 .then(function (resp) {
                     app.categories = resp.data;
                 })
@@ -146,16 +145,17 @@
                 data.append('content', this.post.content);
                 data.append('category_id', this.post.category_id);
 
-                axios.post('/api/posts', data, {
+                this.axios.post('/api/posts', data, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 }).then(function (resp) {
-                    console.log(resp)
+                    // console.log(resp)
+                    alert(resp.data.message)
                     // app.$router.push({path: '/'});
                 }).catch(function (resp) {
                     console.log(resp);
-                    alert("Could not create your post");
+                    alert(resp.data.message);
                 });
             }
         }

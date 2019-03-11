@@ -27,7 +27,7 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Support\Collection
      */
     public function index()
     {
@@ -53,9 +53,9 @@ class PostController extends Controller
             $input['thumbnail'] = $request->file('thumbnail')->store('public/images');
             $this->post->create($input);
 
-            return response()->json(['status' => 'Tạo post thành công']);
+            return response()->json(['message' => 'Tạo post thành công']);
         } else {
-            return response()->json(['status' => 'Bạn không có quyền thực hiện hành động này'], 403);
+            return response()->json(['message' => 'Bạn không có quyền thực hiện hành động này'], 403);
         }
     }
 
@@ -63,11 +63,13 @@ class PostController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function show($id)
     {
-        return $this->post->find($id);
+        $post = $this->post->findOrFail($id);
+        $post['thumbnail'] = Storage::url($post['thumbnail']);
+        return $post;
     }
 
     /**
@@ -79,13 +81,15 @@ class PostController extends Controller
      */
     public function update(PostEdit $request, $id)
     {
-        if (Auth::user()->can('post.update')) {
-            $input = $request->all(['title', 'content', 'description']);
-            $this->post->update($input, $id);
+        $post = $this->post->findOrFail($id);
+        if (Auth::user()->can('post.update', $post)) {
+            $input = $request->all(['title', 'slug', 'description', 'thumbnail', 'content', 'published', 'category_id']);
+            if ($input['thumbnail']) $input['thumbnail'] = $request->file('thumbnail')->store('public/images');
+            $this->post->update($post, $input);
 
-            return response()->json(['status' => 'Cập nhật post thành công']);
+            return response()->json(['message' => 'Cập nhật post thành công']);
         } else {
-            return response()->json(['status' => 'Bạn không có quyền thực hiện hành động này'], 403);
+            return response()->json(['message' => 'Bạn không có quyền thực hiện hành động này'], 403);
         }
     }
 
@@ -94,11 +98,18 @@ class PostController extends Controller
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy($id)
     {
-        $this->post->delete($id);
+        $post = $this->post->findOrFail($id);
+        $this->post->delete($post);
 
-        return response()->json(['status' => 'Xóa post thành công']);
+        return response()->json(['message' => 'Xóa post thành công']);
+    }
+
+    public function draft()
+    {
+        return $this->post->findWhere(['published' => false]);
     }
 }

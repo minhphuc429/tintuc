@@ -29,7 +29,7 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Support\Collection
      */
     public function index()
     {
@@ -54,7 +54,7 @@ class CategoryController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Support\Collection
      */
     public function show($id)
     {
@@ -72,8 +72,9 @@ class CategoryController extends Controller
     {
         $input = $request->all(['name', 'slug']);
 //        $input['slug'] = Helper::slugit($request->name);
-        $this->category->update($input, $id);
-        return response()->json(['message' => 'success', 'data' => $input]);
+        $category = $this->category->findOrFail($id);
+        $this->category->update($category, $input);
+        return response()->json(['message' => 'success']);
     }
 
     /**
@@ -81,10 +82,12 @@ class CategoryController extends Controller
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy($id)
     {
-        $this->category->delete($id);
+        $category = $this->category->findOrFail($id);
+        $this->category->delete($category);
         return response()->json();
     }
 }

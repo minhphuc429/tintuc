@@ -30,6 +30,7 @@ class PostEdit extends FormRequest
             'description' => 'required',
             'content' => 'required',
             'category_id' => 'required',
+            'published' => 'required',
         ];
     }
 }

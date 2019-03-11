@@ -26,11 +26,13 @@ Route::prefix('api')->group(function () {
         'categories' => 'API\CategoryController',
         'posts' => 'API\PostController'
     ]);
+
+    Route::get('/draft', 'API\PostController@draft');
 });
 
-Route::get('/admin', function () {
+Route::get('/admin/{vue?}', function () {
     return view('dashboard');
-})->middleware('auth');
+})->where('vue', '[\/\w\.-]*')->middleware('auth');
 
 /*Route::get('/', 'API\PostController@index');
 Route::get('/posts', 'API\PostController@index')->name('list_posts');

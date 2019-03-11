@@ -45,7 +45,7 @@
                 var newCategory = app.category;
                 axios.post('/api/categories', newCategory)
                     .then(function (resp) {
-                        app.$router.push({path: '/'});
+                        app.$router.push({path: '/categories'});
                     })
                     .catch(function (resp) {
                         console.log(resp);

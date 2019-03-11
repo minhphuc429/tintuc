@@ -11,6 +11,9 @@
             <li class="{{ Request::segment(2) === 'posts' ? 'active' : null }} treeview ripple">
                 <router-link :to="{name: 'posts.list'}" class="fa fa-dashboard"> </i><span> Post</span></router-link>
             </li>
+            <li class="{{ Request::segment(2) === 'draft' ? 'active' : null }} treeview ripple">
+                <router-link :to="{name: 'posts.draft'}" class="fa fa-dashboard"> </i><span> Draft</span></router-link>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->
